@@ -1,33 +1,8 @@
-﻿@* <!DOCTYPE html> *@
-@* <html lang="en"> *@
-@* <head> *@
-@*     <meta charset="utf-8" /> *@
-@*     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> *@
-@*     <title>@ViewData["Title"] - tmdt</title> *@
-@*     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
-@*     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
-@*     <link rel="stylesheet" href="~/tmdt.styles.css" asp-append-version="true" /> *@
-@* </head> *@
-@* <body> *@
-@*     <header> *@
-@*         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> *@
-@*             <div class="container-fluid"> *@
-@*                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">tmdt</a> *@
-@*                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" *@
-@*                         aria-expanded="false" aria-label="Toggle navigation"> *@
-@*                     <span class="navbar-toggler-icon"></span> *@
-@*                 </button> *@
-@*                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> *@
-@*                     <ul class="navbar-nav flex-grow-1"> *@
-@*                         <li class="nav-item"> *@
-@*                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
-@*                         </li> *@
-@*                         <li class="nav-item"> *@
-@*                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
-@*                         </li> *@
-@*                     </ul> *@
-@*                     <partial name="_LoginPartial" /> *@
-@*                 </div> *@
+﻿
+@* @inject IStringLocalizer<HomeController> Localizer *@
+@inject IViewLocalizer Localizer
+
+@*                 
 @*             </div> *@
 @*         </nav> *@
 @*     </header> *@
@@ -56,12 +31,16 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anon - eCommerce Website</title>
+  <title>@ViewData["Title"] - tmdt</title>
 
   <!--
     - favicon
   -->
   <link rel="shortcut icon" href="~/images/logo/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="~/tmdt.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/tmdt.styles.css" asp-append-version="true" />
   <!--
     - custom css link
@@ -218,16 +197,28 @@
 
             <option value="vi">VND &#8363;</option>
             <option value="usd">USD &dollar;</option>
-           
           </select>
+                    @* @{ *@
+                    @*     var culture = Context.Session.GetString("Culture") ?? "vi"; // Lấy ngôn ngữ từ Session, mặc định là "vi" *@
+                    @* } *@
 
-          <select name="language">
+                    @* <form id="langForm" method="post" asp-controller="Language" asp-action="ChangeLanguage" asp-area="Customer"> *@
+                    @*     <select name="language" onchange="this.form.submit()"> *@
+                    @*         @if (culture == "vi") *@
+                    @*         { *@
+                    @*             <option value="vi" selected>Tiếng Việt</option> *@
+                    @*             <option value="en">English</option> *@
+                    @*         } *@
+                    @*         else *@
+                    @*         { *@
+                    @*             <option value="en" selected>English</option> *@
+                    @*             <option value="vi">Tiếng Việt</option> *@
+                    @*         } *@
+                    @*     </select> *@
+                    @*     <input type="hidden" name="returnUrl" value="@Url.Action("Index", "Home", new { area = "Customer" })" /> *@
+                    @* </form> *@
 
-            <option value="vn-vi">VietNam</option>
-            <option value="en-US">English</option>
-            
-          </select>
-
+                    
         </div>
 
       </div>
@@ -238,10 +229,10 @@
 
       <div class="container">
 
-        <a href="#" class="header-logo">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="header-logo">
           <img src="~/images/logo/logo.svg" alt="Anon's logo" width="120" height="36">
         </a>
-
+        
         <div class="header-search-container">
 
           <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
@@ -251,24 +242,8 @@
           </button>
 
         </div>
+        <partial name="_LoginPartial" />
 
-        <div class="header-user-actions">
-
-          <button class="action-btn">
-            <ion-icon name="person-outline"></ion-icon>
-          </button>
-
-          <button class="action-btn">
-            <ion-icon name="heart-outline"></ion-icon>
-            <span class="count">0</span>
-          </button>
-
-          <button class="action-btn">
-            <ion-icon name="bag-handle-outline"></ion-icon>
-            <span class="count">0</span>
-          </button>
-
-        </div>
 
       </div>
 
@@ -301,14 +276,20 @@
 
                 <li class="panel-list-item">
                   <a href="#">Laptop</a>
+                                   
                 </li>
 
                 <li class="panel-list-item">
                   <a href="#">Camera</a>
+                                   
+                                    <p>@Localizer["Welcome"]</p>
+
+
                 </li>
 
                 <li class="panel-list-item">
                   <a href="#">Tablet</a>
+
                 </li>
 
                 <li class="panel-list-item">
@@ -420,7 +401,7 @@
 
                 <li class="panel-list-item">
                   <a href="#">
-                    <img src="./assets/images/electronics-banner-2.jpg" alt="mouse collection" width="250" height="119">
+                    <img src="~/images/electronics-banner-2.jpg" alt="mouse collection" width="250" height="119">
                   </a>
                 </li>
 
@@ -428,7 +409,7 @@
 
             </div>
           </li>
-
+                   
           <li class="menu-category">
             <a href="#" class="menu-title">Men's</a>
 
@@ -1117,7 +1098,10 @@
   -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script> 
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
+    <script src="~/js/site.js" asp-append-version="true"></script> 
+     @await RenderSectionAsync("Scripts", required: false) 
 </body>
 
 </html>

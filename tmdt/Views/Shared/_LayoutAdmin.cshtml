@@ -1,0 +1,704 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVERSHOP Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fa;
+            color: #333;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #1a2d3d;
+            color: #fff;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease; /* Smooth transition for width change */
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            top: 0; /* Ensure sidebar sticks to the top */
+        }
+
+        .sidebar.collapsed {
+            width: 60px; /* Collapsed width */
+        }
+
+        .sidebar h2 {
+            padding: 20px;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar li:hover {
+            background-color: #22425d;
+        }
+
+        .sidebar li i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar li.active {
+            background-color: #22425d;
+        }
+
+        .sidebar hr {
+            border-color: #44525f;
+            margin: 20px 0;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease; /* Match sidebar transition */
+            margin-left: 250px; /* Initial margin to accommodate sidebar */
+        }
+
+        .main-content.collapsed {
+            margin-left: 60px; /* Collapsed margin */
+        }
+
+        .top-bar {
+            background-color: #fff;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .search-box i {
+            margin-right: 5px;
+            color: #777;
+        }
+
+        .search-box input[type="text"] {
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .user-profile {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #8bc34a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* Dashboard Content Styles */
+        .dashboard-content h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .dashboard-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .card .chart {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        /* Additional Styles for the specific layout */
+        .quick-links {
+            margin-top: 30px;
+        }
+
+        .main-nav {
+            margin-top: 20px;
+        }
+
+        .main-nav ul {
+            padding-left: 0;
+        }
+
+        .sale-statistics {
+            width: 100%; /* Adjusted width */
+        }
+
+        .lifetime-sales {
+            width: 100%; /* Adjusted width */
+        }
+
+        .sale-statistics img {
+            width: 100%;
+            height: auto;
+        }
+
+        .best-sellers {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+
+        .best-sellers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .best-sellers-header a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .best-seller-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .best-seller-item:last-child {
+            border-bottom: none;
+        }
+
+        .best-seller-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .best-seller-item .item-details {
+            flex: 1;
+        }
+
+        .best-seller-item .item-details p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .best-seller-item .item-sales {
+            text-align: right;
+        }
+
+        .best-seller-item .item-sales p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .sales-chart {
+            width: 100%;
+            height: auto;
+        }
+
+        .lifetime-sales-chart {
+            width: 100%;
+            height: auto;
+        }
+
+        .lifetime-sales ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lifetime-sales li {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .lifetime-sales li::before {
+            content: "•";
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        .lifetime-sales li:nth-child(1)::before {
+            color: #3498db;
+        }
+
+        .lifetime-sales li:nth-child(2)::before {
+            color: #83d9f2;
+        }
+
+        .lifetime-sales li:nth-child(3)::before {
+            color: #5cb85c;
+        }
+
+        .lifetime-sales li:nth-child(4)::before {
+            color: #f0ad4e;
+        }
+
+        .best-sellers-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .best-sellers {
+            width: 100%;
+        }
+
+        .best-seller-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .best-seller-details {
+            flex: 1;
+        }
+
+        .best-seller-sales {
+            text-align: right;
+        }
+
+        .dashboard-main {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .dashboard-main .sale-statistics {
+            width: 65%;
+        }
+
+        .dashboard-main .lifetime-sales {
+            width: 30%;
+        }
+
+        .daily-weekly-monthly {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .daily-weekly-monthly a {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .daily-weekly-monthly a:hover {
+            text-decoration: underline;
+        }
+
+        .pie-chart {
+            width: 100%;
+            height: auto;
+        }
+
+        /* General Styling */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Layout Adjustments */
+        .main-content {
+            padding: 30px;
+            margin-top: 70px; /* Height of the top bar */
+        }
+
+        .top-bar {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-content h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            padding: 25px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .best-sellers-header {
+            margin-bottom: 20px;
+        }
+
+        .best-sellers-header a {
+            font-size: 16px;
+        }
+
+        .best-seller-item {
+            padding: 15px 0;
+        }
+
+        .best-seller-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        .best-seller-item .item-details p {
+            font-size: 16px;
+        }
+
+        .best-seller-item .item-sales p {
+            font-size: 16px;
+        }
+
+        .lifetime-sales li {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .sidebar .evershop-logo {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .sidebar .evershop-logo img {
+            margin-right: 10px;
+        }
+
+        .sidebar .evershop-logo span {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .sidebar .quick-links {
+            margin-top: 40px;
+        }
+
+        .sidebar .quick-links h3 {
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar .main-nav {
+            margin-top: 30px;
+        }
+
+        .sidebar .main-nav h3 {
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar li.menu-heading {
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: default;
+        }
+
+        .sidebar li.menu-heading:hover {
+            background-color: transparent;
+        }
+
+        /* Collapse Button Style */
+        .collapse-button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            margin-left: auto; /* Push to the right */
+            display: flex;
+            align-items: center;
+        }
+
+        .collapse-button:focus {
+            outline: none;
+        }
+
+        .evershop-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .evershop-header .evershop-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .evershop-header .evershop-logo img {
+            margin-right: 10px;
+        }
+
+        .evershop-header .evershop-logo span {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /* Hide text in collapsed state */
+        .sidebar.collapsed .evershop-header .evershop-logo span,
+        .sidebar.collapsed .quick-links h3,
+        .sidebar.collapsed .main-nav h3,
+        .sidebar.collapsed li span {
+            display: none;
+        }
+
+        .sidebar li span {
+            display: inline; /* Make sure the text is visible by default */
+        }
+
+        .sidebar.collapsed li {
+            padding: 15px 10px; /* Reduce padding when collapsed */
+            text-align: center; /* Center the icon */
+        }
+
+        .sidebar.collapsed li i {
+            margin-right: 0; /* Remove icon margin */
+        }
+
+        /* Adjustments for the return button */
+        .return-button {
+            display: none; /* Initially hidden */
+        }
+
+        .sidebar.collapsed .return-button {
+            display: flex; /* Show only when collapsed */
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar.expanded {
+            width: 250px;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* CMS Pages and Widgets Styles */
+        .cms-widgets {
+            margin-top: 30px;
+        }
+
+        .cms-widgets h3 {
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cms-widgets ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .cms-widgets li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cms-widgets li:hover {
+            background-color: #22425d;
+        }
+
+        .cms-widgets li i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Make the top bar stick to the top */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* Adjust main content to be below the top bar */
+        .main-content {
+            margin-top: 70px; /* Adjust based on top-bar height */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="evershop-header">
+           
+            <button class="collapse-button" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <button class="return-button" onclick="returnSidebar()">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="quick-links">
+            <ul>
+                <li class="active"><i class="fas fa-home"></i><span>Dashboard</span></li>
+                <li><i class="fas fa-plus"></i><span>New Product</span></li>
+                <li><i class="fas fa-gift"></i><span>New Coupon</span></li>
+            </ul>
+        </div>
+        <div class="main-nav">
+            <ul>
+                <li class="menu-heading">CATALOG</li>
+                <li><i class="fas fa-box"></i><span>Products</span></li>
+                <li><i class="fas fa-link"></i><span>Categories</span></li>
+                <li><i class="fas fa-shapes"></i><span>Collections</span></li>
+                <li><i class="fas fa-hashtag"></i><span>Attributes</span></li>
+                <li class="menu-heading">SALE</li>
+                <li><i class="fas fa-shopping-cart"></i><span>Orders</span></li>
+                <li class="menu-heading">CUSTOMER</li>
+                <li><i class="fas fa-users"></i><span>Customers</span></li>
+                <li class="menu-heading">PROMOTION</li>
+                <li><i class="fas fa-tags"></i><span>Coupons</span></li>
+                <li class="menu-heading">SETTING</li>
+                <li><i class="fas fa-cog"></i></li>
+            </ul>
+        </div>
+        <div class="cms-widgets">
+            <ul>
+                <li class="menu-heading">CMS PAGES</li>
+                <li><i class="fas fa-file"></i><span>About Us</span></li>
+                <li><i class="fas fa-file"></i><span>Contact Us</span></li>
+                <li>
+                <li class="menu-heading">WIDGETS</li>
+                <li><i class="fas fa-puzzle-piece"></i><span>Featured Products</span></li>
+                <li><i class="fas fa-puzzle-piece"></i><span>Sale Banner</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="top-bar">
+        <div class="evershop-logo">
+            <img src="https://placehold.co/30x30/png" alt="EVERSHOP Logo">
+            <span>EVERSHOP</span>
+        </div>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search">
+        </div>
+
+        <div class="user-profile">
+            D
+        </div>
+    </div>
+    @RenderBody()
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("main-content");
+            sidebar.classList.toggle("collapsed");
+            mainContent.classList.toggle("collapsed");
+        }
+
+        function returnSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("main-content");
+            sidebar.classList.remove("collapsed");
+            mainContent.classList.remove("collapsed");
+        }
+    </script>
+</body>
+</html>

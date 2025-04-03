@@ -1,3 +1,99 @@
-﻿@{
+﻿@model IEnumerable<SanPham>
+@{
 	Layout = "_LayoutAdmin"; // Không sử dụng layout chính
 }
+<div class="main-content" id="main-content">
+    <div class="container my-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold">Sản phẩm</h2>
+            <a asp-controller="SanPham" asp-action="Upsert" class="btn btn-success">
+                Thêm sản phẩm
+            </a>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="card p-3 mb-3 shadow-sm ">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option selected>Trạng thái</option>
+                        <option>Bật</option>
+                        <option>Tắt</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option selected>Product Type</option>
+                        <option>Electronics</option>
+                        <option>Fashion</option>
+                        <option>Home</option>
+                    </select>
+                </div>
+                <div class="col-md-2 text-end my-auto">
+                    @* <a href="#" class="text-primary">Clear filter</a> *@
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Table -->
+        <table class="table align-middle table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>ẢNH SP</th>
+                    <th>TÊN</th>
+                    <th>GIÁ</th>
+                    <th>MÃ</th>
+                    <th>TỒN KHO</th>
+                    <th>TRẠNG THÁI</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td><img src="@item.images.FirstOrDefault()" width="50" class="img-thumbnail"></td>
+                        <td>@item.Name</td>
+                        <td>@string.Format("{0:N0}đ", item.Price)</td>
+                        <td>@item.Id</td>
+                        @* <td>@item.Stock</td> *@
+                        @* <td>@(item.Status ? "Active" : "Inactive")</td> *@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+    <script>
+        function confirmDelete(id, row) {
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
+                xoa(id, row);
+            }
+        }
+
+        function xoa(idx, row) {
+            $.ajax({
+                url: `SanPham/Delete`,
+                type: 'POST',
+                data: { id: idx },
+                success: function (data) {
+                    if (data.success) {
+                        row.closest("tr").remove();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Xóa thất bại: " + error);
+                }
+            });
+        }
+    </script>
+</div>

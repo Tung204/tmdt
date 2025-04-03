@@ -40,11 +40,28 @@ namespace tmdt.Models
         {
             return UpdatedDate >= CreatedDate;
         }
-        [Required]
-        public HashSet<String> images { get; set; } = new HashSet<String>(); // Danh sách Ảnh sản phẩm
+
 
         [Required]
-        [Range(1, double.MaxValue, ErrorMessage ="Số lượng phải lớn hơn 1")]
+        public bool Status { get; set; } = true; //Trạng thái sản phẩm (Enabled / Disabled)
+
+        // Hiển thị sản phẩm (Visible / Not Visible)
+        [Required]
+        public bool Visibility { get; set; } = true;
+
+        // Quản lý kho (Có / Không)
+        [Required]
+        public bool ManageStock { get; set; } = false;
+
+        // Trạng thái kho hàng (Còn hàng / Hết hàng)
+        [Required]
+        public bool StockAvailability { get; set; } = true;
+
+        [Required]
+        public List<String> images { get; set; } = new List<String>();        // Danh sách Ảnh sản phẩm
+
+        [Required]
+        [Range(1, double.MaxValue, ErrorMessage = "Số lượng phải lớn hơn 1")]
         public int Quantity { get; set; } // số lượng sản phẩm
 
         [Required]
@@ -58,5 +75,23 @@ namespace tmdt.Models
         [ForeignKey(nameof(VariantId))]
         [ValidateNever]
         public Variant Variant { get; set; } = null!;
+
+        [Required]
+        public int AttributesId { get; set; }
+        [ForeignKey(nameof(AttributesId))]
+        [ValidateNever]
+        public ProductAttribute Attributes { get; set; } = null!;
+
+        [Required]
+        public int TaxClassId { get; set; }
+        [ForeignKey(nameof(TaxClassId))]
+        [ValidateNever]
+        public TaxClass TaxClass { get; set; } = null!;
+
+        [Required]
+        public int SearchEngineId { get; set; }
+        [ForeignKey(nameof(SearchEngineId))]
+        [ValidateNever]
+        public SearchEngine SearchEngine { get; set; } = null!;
     }
 }

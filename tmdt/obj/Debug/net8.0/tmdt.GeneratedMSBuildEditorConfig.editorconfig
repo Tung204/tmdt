@@ -28,8 +28,28 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
+[D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Admin/Views/Attributes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXR0cmlidXRlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Admin/Views/Attributes/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXR0cmlidXRlc1xVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Admin/Views/SanPham/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2FuUGhhbVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Admin/Views/SanPham/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2FuUGhhbVxVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Hoc_Tap/3/tmdt/tmdt/tmdt/Areas/Customer/Views/Home/Index.cshtml]
